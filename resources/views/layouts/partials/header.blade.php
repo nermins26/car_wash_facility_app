@@ -15,7 +15,7 @@
                 @if (Route::has('login'))
                   @auth
                     <span class="mr-3">
-                      Hi, user!
+                      Hi, {{ auth()->user()->username }}!
                     </span>
                     <form id="logOutForm" action="{{ route('logout') }}" method="POST" hidden>
                       @csrf

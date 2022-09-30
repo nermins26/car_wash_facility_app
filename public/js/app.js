@@ -2062,6 +2062,10 @@ module.exports = {
 
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
+window.submitForm = function (formId) {
+  document.querySelector("#".concat(formId)).submit();
+};
+
 /***/ }),
 
 /***/ "./resources/js/bootstrap.js":

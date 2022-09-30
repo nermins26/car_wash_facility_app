@@ -3,6 +3,7 @@
 namespace App\Actions\Fortify;
 
 use App\Models\User;
+use App\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -21,7 +22,12 @@ class CreateNewUser implements CreatesNewUsers
     public function create(array $input)
     {
         Validator::make($input, [
-            'name' => ['required', 'string', 'max:255'],
+            'username' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique(User::class)
+            ],
             'email' => [
                 'required',
                 'string',
@@ -30,10 +36,32 @@ class CreateNewUser implements CreatesNewUsers
                 Rule::unique(User::class),
             ],
             'password' => $this->passwordRules(),
+            'role_id' => ['integer', 'max:2']
         ])->validate();
 
+        /**
+         * if user has been created by admin, this block 
+         * of code will be executed
+         */
+        if(isset($input['role'])) {
+
+            $role = Role::where('name', $input['role'])->first();
+
+            return User::create([
+                'username' => $input['username'],
+                'email' => $input['email'],
+                'password' => Hash::make($input['password']),
+                'role_id' => $role->id
+            ]);
+
+        }
+
+        /**
+         * if user has been created using registration form
+         * then it will have role client by default
+         */
         return User::create([
-            'name' => $input['name'],
+            'username' => $input['username'],
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
         ]);
