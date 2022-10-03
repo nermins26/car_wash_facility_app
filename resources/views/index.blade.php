@@ -2,6 +2,6 @@
 
 @section('content')
 
-    
+    @include('layouts.partials.offers')
 
 @endsection

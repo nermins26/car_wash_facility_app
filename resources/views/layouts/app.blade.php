@@ -19,6 +19,8 @@
 
 
 
+
+
 <!-- FOOTER SECTION -->
 
 @include('layouts.partials.footer')

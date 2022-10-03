@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\OrderPhase;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -16,6 +17,14 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserSeeder::class,
             RoleSeeder::class,
+            WashingProgramSeeder::class,
+            WashingStepSeeder::class,
+            WashingProgramWashingStepSeeder::class,
+            CarSeeder::class,
+            OrderSeeder::class,
+            OrderPhaseSeeder::class,
+            PaymentSeeder::class,
+            ProfileSeeder::class,
         ]);
     }
 }

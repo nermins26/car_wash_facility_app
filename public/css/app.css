@@ -5,3 +5,7 @@ body {
 li {
   list-style-type: none;
 }
+
+#dashboardLink:hover {
+  color: white;
+}

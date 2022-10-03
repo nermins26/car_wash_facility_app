@@ -21,7 +21,7 @@ class CreateNewUser implements CreatesNewUsers
      */
     public function create(array $input)
     {
-        Validator::make($input, [
+        $validator = Validator::make($input, [
             'username' => [
                 'required',
                 'string',
@@ -36,8 +36,17 @@ class CreateNewUser implements CreatesNewUsers
                 Rule::unique(User::class),
             ],
             'password' => $this->passwordRules(),
-            'role_id' => ['integer', 'max:2']
-        ])->validate();
+            'role' => ['string', 'max:32']
+        ]);
+
+
+        if($validator->fails()){
+
+            return response()->json([
+                'status' => 400,
+                'errors' => $validator->errors()
+            ]);
+        } 
 
         /**
          * if user has been created by admin, this block 
@@ -47,23 +56,34 @@ class CreateNewUser implements CreatesNewUsers
 
             $role = Role::where('name', $input['role'])->first();
 
-            return User::create([
+            User::create([
                 'username' => $input['username'],
                 'email' => $input['email'],
                 'password' => Hash::make($input['password']),
                 'role_id' => $role->id
             ]);
 
-        }
+            return response()->json([
+                'status' => 200,
+                'message' => 'User successfully created!'
+            ]);
+
+        } 
 
         /**
          * if user has been created using registration form
          * then it will have role client by default
          */
-        return User::create([
+        User::create([
             'username' => $input['username'],
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
+            'role_id' => 3
+        ]);
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'User successfully created!'
         ]);
     }
 }
