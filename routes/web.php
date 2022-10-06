@@ -20,15 +20,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
 Route::get('/', function () {
     $washingPrograms = WashingProgram::all();
     return view('index', compact('washingPrograms'));
 })->name('home');
 
+
 Route::get('/readme', function() {
     return view('layouts.readme');
 })->name('readme');
+
 
 
 Route::middleware(['auth', 'HasRole:administrator'])->prefix('users')->name('users.')->group(function () {
@@ -49,7 +50,9 @@ Route::middleware(['auth', 'HasRole:administrator'])->prefix('users')->name('use
 });
 
 
+//show dashboard
 Route::middleware('auth')->get('/dashboard', [UserController::class, 'showDashboard'])->name('dashboard.show');
+
 
 
 Route::middleware(['auth', 'HasRole:client'])->prefix('profiles')->name('profiles.')->group(function() {
@@ -62,6 +65,7 @@ Route::middleware(['auth', 'HasRole:client'])->prefix('profiles')->name('profile
 
     Route::delete('/delete/{id}', [ProfileController::class, 'deleteProgram'])->name('delete');
 });
+
 
 
 Route::middleware(['auth', 'HasRole:client'])->prefix('cars')->name('cars.')->group(function() {
@@ -78,6 +82,7 @@ Route::middleware(['auth', 'HasRole:client'])->prefix('cars')->name('cars.')->gr
 });
 
 
+
 Route::middleware(['auth', 'HasRole:administrator'])->prefix('programs')->name('programs.')->group(function() {
 
     Route::get('/create', [WashingProgramController::class, 'showCreatePrograms'])->name('show.create');
@@ -92,6 +97,7 @@ Route::middleware(['auth', 'HasRole:administrator'])->prefix('programs')->name('
 });
 
 
+
 Route::middleware(['auth', 'HasRole:administrator'])->prefix('steps')->name('steps.')->group(function() {
 
     Route::get('/create', [WashingStepController::class, 'showCreateSteps'])->name('show.create');
@@ -104,6 +110,7 @@ Route::middleware(['auth', 'HasRole:administrator'])->prefix('steps')->name('ste
 
     Route::delete('/delete/{id}', [WashingStepController::class, 'deleteStep'])->name('delete');
 });
+
 
 
 Route::middleware('auth')->prefix('orders')->name('orders.')->group(function() {

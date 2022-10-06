@@ -16,10 +16,10 @@ class CarSeeder extends Seeder
     {
         DB::table('cars')->insert([
             [
-                'brend' => "VW",
-                'model' => 'CC',
+                'brend' => "BMW",
+                'model' => 'X5',
                 'color' => 'blue',
-                'year' => 2009,
+                'year' => 20014,
                 'profile_id' => 1
             ],
             [
@@ -27,14 +27,14 @@ class CarSeeder extends Seeder
                 'model' => 'A3',
                 'color' => 'black',
                 'year' => 2007,
-                'profile_id' => 2
+                'profile_id' => 1
             ],
             [
                 'brend' => "Mercedes",
                 'model' => 'C2000',
                 'color' => 'gray',
                 'year' => 2019,
-                'profile_id' => 3
+                'profile_id' => 1
             ],
         ]);
     }

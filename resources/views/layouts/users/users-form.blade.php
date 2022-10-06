@@ -1,3 +1,5 @@
+<!-- Contains all forms for Users CRUD. It displays specific form based on keyword -->
+
 @isset($edit)
     <form method="POST">
         @csrf

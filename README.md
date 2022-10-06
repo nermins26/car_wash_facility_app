@@ -41,4 +41,6 @@ Nakon svake simulirane narudžbe, korisniku se broj narudžbi povećava za 1.</p
                     
 ## Greške i nedostaci
 <p>Većina bug-ova je ispravljena s tim da ostaje nedostatak/bug u navigaciji(tabovi) da svaki put kada reloadujemo stranicu, korisnik mora manuelno da prebaci na tab na kojem je bio prije reload-a. Ovaj problem svakako bi se najbolje rješio implementiranjem rješenja sličnog kao i kod CRUD-a korisnika (AJAX) ali bi bilo potrebno više vremena.</p>
+<p>Također nedostatak je što kroz cijelu aplikaciju, svi gotovo svi requesti rade na bazi ID-a, što je u svakom slučaju pogrešno ali je u ovom slučaju korišteno radi bržeg razvoja i radi demonstracije rada. Svakako za korisnike bi se koristio možda slug, za narudžbe bi se korsitio broj narudžbe i sl.</p>
+<p>Prilikom brisanja npr. korisnika, postoji bug zbog kojeg ne briše povezane record-e sa tim korisnikom</p>
 <p>Bila je namjera da se ubaci i search query ili eventualno filter query koji bi mogao da rezultate iz tabela filtrira po odredjenim parametrima kao npr. starije/novije i sl.</p>

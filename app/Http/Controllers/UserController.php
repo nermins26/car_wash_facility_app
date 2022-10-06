@@ -24,14 +24,16 @@ class UserController extends Controller
         $roles = Role::all();
         $programs = WashingProgram::orderBy('id', 'desc')->paginate(5);
         $steps = WashingStep::paginate(5);
+        //if user's role is client, then show only orders for that specific user
         if($user->role->name == 'client') {
             $orders = Order::where('user_id', $user->id)->orderBy('id', 'desc')->paginate(5);
         } else {
-            $orders = Order::orderBy('id', 'desc')->paginate(5);
+            $orders = Order::orderBy('id', 'desc')->paginate(5);    //if not, show all orders from all clients
         }
         
         $orderPhases = OrderPhase::all();
 
+        //if the user has completed profile and has at least one car
         if($user->profile && $user->profile->cars) {
             $cars = Car::where('profile_id', $user->profile->id)->paginate(5);
             return view('layouts.dashboard-content', compact('users', 'roles', 'programs', 'steps', 'orders', 'orderPhases', 'cars'));
@@ -72,6 +74,7 @@ class UserController extends Controller
         ]);
     }
 
+
     public function createUsers(Request $request)
     {
         $newUser = new CreateNewUser;
@@ -79,6 +82,7 @@ class UserController extends Controller
         return $newUser->create($request->all());
 
     }
+
 
     public function editUsers(Request $request, int $id)
     {
@@ -96,6 +100,7 @@ class UserController extends Controller
         return $updateUser->update($user, $request->all());
 
     }
+    
 
     public function deleteUser(int $id)
     {

@@ -16,6 +16,7 @@ class WashingProgramController extends Controller
         return view('layouts.washingPrograms.create', compact('steps'));
     }
 
+
     public function showEditPrograms(int $id)
     {
         $program = WashingProgram::where('id', $id)->first();
@@ -29,23 +30,25 @@ class WashingProgramController extends Controller
 
     }
 
+
     public function createPrograms(Request $request)
     {
 
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string|max:255',
-            'price' => 'required|regex:/[0-9]*\\.[0-9]+/i',
-            'steps' => 'required|min:3'
+            'price' => 'required|regex:/[0-9]*\\.[0-9]+/i', //price should be decimal number with two places
+            'steps' => 'required|min:3' //each program should consists of at least 3 procedures/steps
         ]);
 
         $program = WashingProgram::create($request->except(['_token', '_method', 'steps']));
 
-        $program->washingSteps()->sync($request->input('steps'));
+        $program->washingSteps()->sync($request->input('steps'));   //update pivot table
         
         return redirect(route('dashboard.show'))->with(["response-message" => "Successfully created new program"]);
 
     }
+
 
     public function editPrograms(Request $request, int $id)
     {
@@ -60,10 +63,11 @@ class WashingProgramController extends Controller
         //dd($request->input('steps'));
         $program->update($request->except(['_token', '_method', 'steps']));
 
-        $program->washingSteps()->sync($request->input('steps'));
+        $program->washingSteps()->sync($request->input('steps'));   //update pivot table
 
         return redirect(route('dashboard.show'))->with(["response-message" => "Successfully updated program"]);
     }
+
 
     public function deleteProgram(int $id)
     {

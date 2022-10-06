@@ -16,25 +16,11 @@ class ProfileSeeder extends Seeder
     {
         DB::table('profiles')->insert([
             [
-                'first_name' => 'korisnik1',
-                'last_name' => 'prezime2',
-                'address' => 'address1',
-                'phone' => '+387615432145',
-                'user_id' => 1
-            ],
-            [
-                'first_name' => 'korisnik2',
-                'last_name' => 'prezime4',
-                'address' => 'address23',
-                'phone' => '+387615434345',
-                'user_id' => 2
-            ],
-            [
-                'first_name' => 'korisnik2321',
-                'last_name' => 'prezime43',
-                'address' => 'address21233',
+                'first_name' => 'First',
+                'last_name' => 'Client',
+                'address' => 'address 123',
                 'phone' => '+387615421345',
-                'user_id' => 3
+                'user_id' => 3  //profile for client
             ],
         ]);
     }

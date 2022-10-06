@@ -70,14 +70,14 @@ class User extends Authenticatable
         self::deleting(function($user) { // before delete() method call this
 
             if ($user->profile) {
-                $user->profile()->first()->delete();
+                $user->profile()->delete();
             }
 
             $user->orderCount()->delete();
 
             if ($user->orders) {
                 $user->orders()->each(function($order) {
-                    $order->delet();
+                    $order->delete();
                 });
             }
             

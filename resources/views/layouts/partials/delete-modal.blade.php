@@ -1,3 +1,5 @@
+<!-- Modal for delete confirmation -->
+
 <!-- The Modal -->
 <div class="modal" id="deleteItemModal">
     <div class="modal-dialog">

@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Events\OrderCreated;
 use App\Models\Order;
-use App\Models\User;
 use App\Models\Car;
 use App\Models\OrderPhase;
 use App\Models\PaymentMethod;
@@ -58,6 +57,7 @@ class OrderController extends Controller
         $car = Car::where('id', $request->input('car'))->first();
         $price = 0;
 
+        //calculate the order price based on client's loyality
         if($user->orderCount->count % 10 == 9) {
             $value = $program->price - (($program->price / 100)*20);
         } elseif($user->orderCount->count % 5 == 4) {
@@ -68,7 +68,7 @@ class OrderController extends Controller
             $value = $program->price;
         }
 
-        $price = round($value, 2);
+        $price = round($value, 2);  //round the result on two decimal places
 
         //dd($price);
 
@@ -81,7 +81,7 @@ class OrderController extends Controller
             'car_id' => $car->id
         ]);
 
-        OrderCreated::dispatch(auth()->user());
+        OrderCreated::dispatch(auth()->user());   //increase the number od clien's orders by 1
 
         return redirect(route('home'))->with('new-order-created', 'You sucessfully created new order');
         

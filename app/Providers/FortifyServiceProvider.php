@@ -35,6 +35,7 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
         Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
+        //manual register response
         $this->app->singleton(
             \Laravel\Fortify\Contracts\RegisterResponse::class,
             \App\Http\Responses\RegisterResponse::class
@@ -51,11 +52,11 @@ class FortifyServiceProvider extends ServiceProvider
         });
 
         Fortify::registerView(function () {
-            return view('layouts.register');
+            return view('layouts.register');    //use manual defined register view
         });
 
         Fortify::loginView(function () {
-            return view('layouts.login');
+            return view('layouts.login');   //use manual defined login view
         });
     }
 }

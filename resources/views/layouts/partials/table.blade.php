@@ -35,16 +35,12 @@
                     <td>
                         @auth
                         <a class="btn btn-sm btn-primary m-1" href="{{ route('users.edit', ['user' => $user]) }}">Edit</a>
-
                         <a class="btn btn-sm btn-success m-1" href="{{ route('role.show.assign', ['user'=>$user]) }}">Assign</a>
-
                         <button type="button" class="btn btn-sm btn-danger m-1" data-toggle="modal" onclick="showModal('{{$user->id}}')">Delete</button>
-
                         <form id="deleteForm{{$user->id}}" action="{{ route('users.destroy', ['user'=>$user->id]) }}" method="POST" hidden>
                             @csrf
                             @method('delete')
                         </form>
-
                         @endauth
                     </td>
                 </tr>

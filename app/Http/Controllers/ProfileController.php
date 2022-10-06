@@ -15,7 +15,7 @@ class ProfileController extends Controller
     {
         $userController = new UserController;
 
-        return $userController->showDashboard();
+        return $userController->showDashboard(); //redirect the client and show the create/edit profile form on dashboard
     }
 
 
