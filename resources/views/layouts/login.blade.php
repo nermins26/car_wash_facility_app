@@ -8,6 +8,11 @@
             <div class="card p-4">
                 <div class="card-header">
                     <h3>Log in</h3>
+                    @if (session('new-register'))
+                    <div class="mx-auto alert alert-success p-3 mt-2">
+                        <p>{{ session('new-register') }}</p>
+                    </div>
+                @endif
                 </div>
                 <div class="card-body">
                     <form action="{{ route('login') }}" method="POST">

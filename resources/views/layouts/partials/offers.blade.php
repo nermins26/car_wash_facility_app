@@ -1,5 +1,10 @@
 <div class="container text-center py-5">
     <div class="row">
+        @if (session('new-order-created'))
+            <div class="col-12 alert alert-success p-3 mb-2">
+                <p>{{ session('new-order-created') }}</p>
+            </div>
+        @endif
         @foreach ($washingPrograms as $program)
             <div class="col-12 col-md-6 col-lg-4 my-2">
                 <div class="card">
@@ -19,7 +24,7 @@
                         <h4>{{$program->price}}$</h4>
                     </div>
                     <div class="card-footer">
-                        <a href="" class="btn btn-md btn-primary">Order</a>
+                        <a href="{{route('orders.show.create', ['program' => $program->id])}}" class="btn btn-md btn-primary">Order</a>
                     </div>
                 </div>
             </div>

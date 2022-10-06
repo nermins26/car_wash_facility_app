@@ -5,16 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class OrderPhase extends Model
+class OrderCount extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'name',
+        'count',
+        'user_id'
     ];
 
-    public function orders()
+    public function user()
     {
-        return $this->hasMany(Order::class);
+        return $this->belongsTo(User::class);
     }
 }

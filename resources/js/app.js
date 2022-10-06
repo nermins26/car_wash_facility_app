@@ -1,16 +1,24 @@
 require('./bootstrap');
 
+// simple fn for submiting forms (like logout)
 window.submitForm = formId => {
     document.querySelector(`#${formId}`).submit();
 }
 
 
-//ajax form managing
+/**
+ * 
+ * 
+ * AJAX for users
+ * 
+ * 
+ */
 
 $(document).ready(function() {
 
-    fetchUsers(1);
+    fetchUsers(1);  //get users on page load
 
+    //returns users 
     function fetchUsers(page=1) {
         $.ajax({
             type: "GET",
@@ -25,6 +33,7 @@ $(document).ready(function() {
                     )
                 })
 
+                // populate the table with users
                 $('#usersTable tbody').html("");
                 $.each(response.users.data, function(key, item){
                     $('#usersTable tbody').append(
@@ -50,6 +59,7 @@ $(document).ready(function() {
     }
 
 
+    //set the id of user to change password
     $(document).on('click', '.change_user_password', function(e) {
         
         e.preventDefault();
@@ -58,24 +68,27 @@ $(document).ready(function() {
 
     })
 
-
+    //change password
     $(document).on('click', '.change_user_password_btn', function(e) {
         e.preventDefault();
 
         var user_id = $('#update_password_id').val();
-
+        
+        //get the data from form
         var data = {
             'current_password' : $('#current_password_field').val(), 
             'password' : $('#change_password_field').val(), 
             'password_confirmation' : $('#change_password_confirmation_field').val()
         }
 
+        // csrf token
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
 
+        //send put request
         $.ajax({
             type: "PUT",
             url: `users/password-update/${user_id}`,
@@ -103,12 +116,7 @@ $(document).ready(function() {
     })
 
 
-
-
-
-
-
-
+    //set the id of user to delete
     $(document).on('click', '.delete_user', function(e) {
         e.preventDefault();
         var user_id = $(this).val();
@@ -116,18 +124,20 @@ $(document).ready(function() {
         // alert(user_id);
     })
 
-
+    //handle the function to delete user
     $(document).on('click', '.delete_user_btn', function(e) {
         e.preventDefault();
 
         var user_id = $('#delete_user_id').val();
 
+        //csrf token setup
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
 
+        //send delete request
         $.ajax({
             type: "DELETE",
             url: `users/delete/${user_id}`,
@@ -143,14 +153,12 @@ $(document).ready(function() {
                     $('#deleteUserModal').modal('hide')
                     fetchUsers();
                 }
-                // console.log(response);
             }
         })
-
-       
     })
 
 
+    //handle the click event on pagination links
     $(document).on('click', '.userPagLinks', function(e){
         e.preventDefault();
         var page = $(this).attr('href').split('page=')[1];
@@ -159,11 +167,13 @@ $(document).ready(function() {
     })
 
 
+    //get the user data whom we are editing
     $(document).on('click', '.edit_user', function(e) {
         e.preventDefault();
         var user_id = $(this).val();
         // console.log(user_id);
 
+        //send get request to get the data for user
         $.ajax({
             type: "GET",
             url: `users/edit/${user_id}`,
@@ -183,10 +193,10 @@ $(document).ready(function() {
                 }
             }
         })
-
     })
 
 
+    //send post request to update the user
     $(document).on('click', '.update_user', function(e) {
 
         e.preventDefault();
@@ -198,12 +208,14 @@ $(document).ready(function() {
             'role' : $("input[class='edit_radio_field']:checked").val()
         }
 
+        //csrf token
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
 
+        //send the data to update user
         $.ajax({
             type: "PUT",
             url: `users/edit/${user_id}`,
@@ -233,14 +245,15 @@ $(document).ready(function() {
                 }
             }
         })
-
     })
 
 
+    //create new user
     $(document).on('click', '.add_user', function(e){
 
         e.preventDefault();
 
+        //get the data from create form
         var data = {
             'username' : $('#create_username_field').val(),
             'email' : $('#create_email_field').val(), 
@@ -249,12 +262,14 @@ $(document).ready(function() {
             'role' : $("input[class='create_radio_field']:checked").val(),  
         }
 
+        //csrf token
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
 
+        //send post req to create user
         $.ajax({
             type: "POST",
             url: "users/create",
@@ -279,9 +294,41 @@ $(document).ready(function() {
                 }
             }
         })
-
-        // console.log(data);
-
     });
 
+    /**
+     * 
+     * END OF AJAX
+     * FOR USERS CRUD
+     * 
+     */
+
+    
+
+
+
+    //add the id parametar to the delete form in modal
+    $(document).on('click', '.delete_item_btn', function(e) {
+        e.preventDefault();
+
+        var element_id = $(this).attr('id')
+        var id = element_id.split('_')[1]
+        var type = element_id.split('_')[0]
+
+        $(`#deleteForm`).attr('action', `/${type}s/delete/${id}`)
+        
+    })
+
+
+    //submit status change for orders
+    $(document).on('change', '.status_option', function() {
+        //alert("radi")
+        var id = $(this).attr('id').split('select_')[1];
+        $(`#order_status_change_form_${id}`).submit();
+    })
+
+
 });
+
+
+

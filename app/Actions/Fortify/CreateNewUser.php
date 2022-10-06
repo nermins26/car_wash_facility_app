@@ -4,6 +4,7 @@ namespace App\Actions\Fortify;
 
 use App\Models\User;
 use App\Models\Role;
+use App\Events\UserCreated;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -56,12 +57,14 @@ class CreateNewUser implements CreatesNewUsers
 
             $role = Role::where('name', $input['role'])->first();
 
-            User::create([
+            $user = User::create([
                 'username' => $input['username'],
                 'email' => $input['email'],
                 'password' => Hash::make($input['password']),
                 'role_id' => $role->id
             ]);
+
+            UserCreated::dispatch($user);
 
             return response()->json([
                 'status' => 200,
@@ -74,16 +77,15 @@ class CreateNewUser implements CreatesNewUsers
          * if user has been created using registration form
          * then it will have role client by default
          */
-        User::create([
+        $user = User::create([
             'username' => $input['username'],
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
             'role_id' => 3
         ]);
 
-        return response()->json([
-            'status' => 200,
-            'message' => 'User successfully created!'
-        ]);
+        UserCreated::dispatch($user);
+
+        return $user;
     }
 }

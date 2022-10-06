@@ -48,4 +48,42 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
+    public function profile()
+    {
+        return $this->hasOne(Profile::class);
+    }
+
+    public function orderCount()
+    {
+        return $this->hasOne(OrderCount::class);
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+
+    public static function boot() {
+        parent::boot();
+
+        self::deleting(function($user) { // before delete() method call this
+
+            if ($user->profile) {
+                $user->profile()->first()->delete();
+            }
+
+            $user->orderCount()->delete();
+
+            if ($user->orders) {
+                $user->orders()->each(function($order) {
+                    $order->delet();
+                });
+            }
+            
+            $user->roles()->detach();
+            
+        });
+    }
+
 }

@@ -2060,15 +2060,24 @@ module.exports = {
   \*****************************/
 /***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
 
-__webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
+__webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js"); // simple fn for submiting forms (like logout)
+
 
 window.submitForm = function (formId) {
   document.querySelector("#".concat(formId)).submit();
-}; //ajax form managing
+};
+/**
+ * 
+ * 
+ * AJAX for users
+ * 
+ * 
+ */
 
 
 $(document).ready(function () {
-  fetchUsers(1);
+  fetchUsers(1); //get users on page load
+  //returns users 
 
   function fetchUsers() {
     var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
@@ -2081,33 +2090,39 @@ $(document).ready(function () {
         $('#usersLinks').html("");
         $.each(response.users.links, function (key, link) {
           $('#usersLinks').append("<a class=\"mx-3 userPagLinks\" href=\"".concat(link.url, "\" active=\"").concat(link.active, "\">").concat(link.label, "</a>"));
-        });
+        }); // populate the table with users
+
         $('#usersTable tbody').html("");
         $.each(response.users.data, function (key, item) {
           $('#usersTable tbody').append("<tr>\n                        <td>".concat(item.username, "</td>\n                        <td>").concat(item.email, "</td>\n                        <td>").concat(item.role.name, "</td>\n                        <td>#</td>\n                        <td>\n                            <button value=\"").concat(item.id, "\" class=\"edit_user btn btn-sm btn-primary m-1\" data-toggle=\"modal\" data-target=\"#editUserModal\">Edit</button>\n\n                            <button value=\"").concat(item.id, "\" type=\"button\" class=\"change_user_password btn btn-sm btn-warning m-1\" data-toggle=\"modal\"\n                            data-target=\"#updatePasswordUserModal\">Change Password</button>\n    \n                            <button value=\"").concat(item.id, "\" type=\"button\" class=\"delete_user btn btn-sm btn-danger m-1\" data-toggle=\"modal\"\n                            data-target=\"#deleteUserModal\">Delete</button>\n                        </td>\n                    </tr>"));
         });
       }
     });
-  }
+  } //set the id of user to change password
+
 
   $(document).on('click', '.change_user_password', function (e) {
     e.preventDefault();
     var user_id = $(this).val();
     $('#update_password_id').val(user_id);
-  });
+  }); //change password
+
   $(document).on('click', '.change_user_password_btn', function (e) {
     e.preventDefault();
-    var user_id = $('#update_password_id').val();
+    var user_id = $('#update_password_id').val(); //get the data from form
+
     var data = {
       'current_password': $('#current_password_field').val(),
       'password': $('#change_password_field').val(),
       'password_confirmation': $('#change_password_confirmation_field').val()
-    };
+    }; // csrf token
+
     $.ajaxSetup({
       headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
       }
-    });
+    }); //send put request
+
     $.ajax({
       type: "PUT",
       url: "users/password-update/".concat(user_id),
@@ -2128,20 +2143,24 @@ $(document).ready(function () {
         }
       }
     });
-  });
+  }); //set the id of user to delete
+
   $(document).on('click', '.delete_user', function (e) {
     e.preventDefault();
     var user_id = $(this).val();
     $('#delete_user_id').val(user_id); // alert(user_id);
-  });
+  }); //handle the function to delete user
+
   $(document).on('click', '.delete_user_btn', function (e) {
     e.preventDefault();
-    var user_id = $('#delete_user_id').val();
+    var user_id = $('#delete_user_id').val(); //csrf token setup
+
     $.ajaxSetup({
       headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
       }
-    });
+    }); //send delete request
+
     $.ajax({
       type: "DELETE",
       url: "users/delete/".concat(user_id),
@@ -2156,20 +2175,22 @@ $(document).ready(function () {
           $('#success_message').text(response.message);
           $('#deleteUserModal').modal('hide');
           fetchUsers();
-        } // console.log(response);
-
+        }
       }
     });
-  });
+  }); //handle the click event on pagination links
+
   $(document).on('click', '.userPagLinks', function (e) {
     e.preventDefault();
     var page = $(this).attr('href').split('page=')[1];
     $('#usersLinks').html("");
     fetchUsers(page);
-  });
+  }); //get the user data whom we are editing
+
   $(document).on('click', '.edit_user', function (e) {
     e.preventDefault();
     var user_id = $(this).val(); // console.log(user_id);
+    //send get request to get the data for user
 
     $.ajax({
       type: "GET",
@@ -2190,7 +2211,8 @@ $(document).ready(function () {
         }
       }
     });
-  });
+  }); //send post request to update the user
+
   $(document).on('click', '.update_user', function (e) {
     e.preventDefault();
     var user_id = $('#user_id_field').val();
@@ -2198,12 +2220,14 @@ $(document).ready(function () {
       'username': $('#edit_username_field').val(),
       'email': $('#edit_email_field').val(),
       'role': $("input[class='edit_radio_field']:checked").val()
-    };
+    }; //csrf token
+
     $.ajaxSetup({
       headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
       }
-    });
+    }); //send the data to update user
+
     $.ajax({
       type: "PUT",
       url: "users/edit/".concat(user_id),
@@ -2231,21 +2255,25 @@ $(document).ready(function () {
         }
       }
     });
-  });
+  }); //create new user
+
   $(document).on('click', '.add_user', function (e) {
-    e.preventDefault();
+    e.preventDefault(); //get the data from create form
+
     var data = {
       'username': $('#create_username_field').val(),
       'email': $('#create_email_field').val(),
       'password': $('#create_password_field').val(),
       'password_confirmation': $('#password_confirmation_field').val(),
       'role': $("input[class='create_radio_field']:checked").val()
-    };
+    }; //csrf token
+
     $.ajaxSetup({
       headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
       }
-    });
+    }); //send post req to create user
+
     $.ajax({
       type: "POST",
       url: "users/create",
@@ -2267,7 +2295,28 @@ $(document).ready(function () {
           fetchUsers();
         }
       }
-    }); // console.log(data);
+    });
+  });
+  /**
+   * 
+   * END OF AJAX
+   * FOR USERS CRUD
+   * 
+   */
+  //add the id parametar to the delete form in modal
+
+  $(document).on('click', '.delete_item_btn', function (e) {
+    e.preventDefault();
+    var element_id = $(this).attr('id');
+    var id = element_id.split('_')[1];
+    var type = element_id.split('_')[0];
+    $("#deleteForm").attr('action', "/".concat(type, "s/delete/").concat(id));
+  }); //submit status change for orders
+
+  $(document).on('change', '.status_option', function () {
+    //alert("radi")
+    var id = $(this).attr('id').split('select_')[1];
+    $("#order_status_change_form_".concat(id)).submit();
   });
 });
 

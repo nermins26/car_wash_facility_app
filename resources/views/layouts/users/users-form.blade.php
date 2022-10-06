@@ -86,7 +86,7 @@
 
         <input type="number" id="delete_user_id" hidden>
           
-        <button type="submit" class="delete_user_btn btn btn-primary mt-3">Delete</button>
+        <button type="submit" class="delete_user_btn btn btn-danger mt-3">Delete</button>
     </form>
 @endisset
 

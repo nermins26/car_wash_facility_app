@@ -15,7 +15,8 @@ class OrderPhaseSeeder extends Seeder
     public function run()
     {
         DB::table('order_phases')->insert([
-            ['name' => 'waiting to complete'],
+            ['name' => 'waiting to accept'],
+            ['name' => 'order declined'],
             ['name' => 'order accepted'],
             ['name' => 'washing in progress'],
             ['name' => 'detailing'],

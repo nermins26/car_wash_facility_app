@@ -8,24 +8,40 @@ use App\Actions\Fortify\CreateNewUser;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
 use App\Models\Order;
+use App\Models\Car;
+use App\Models\OrderPhase;
 use App\Models\WashingProgram;
 use App\Models\WashingStep;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Pagination\Paginator;
 
 class UserController extends Controller
 {
     public function showDashboard()
     {
-        $users = User::paginate(2);
-        $roles = Role::paginate(2);
-        $programs = WashingProgram::paginate(2);
-        $steps = WashingStep::paginate(2);
-        $orders = Order::paginate(2);
+        $user = auth()->user();
+        $users = User::orderBy('id', 'desc')->paginate(5);
+        $roles = Role::all();
+        $programs = WashingProgram::orderBy('id', 'desc')->paginate(5);
+        $steps = WashingStep::paginate(5);
+        if($user->role->name == 'client') {
+            $orders = Order::where('user_id', $user->id)->orderBy('id', 'desc')->paginate(5);
+        } else {
+            $orders = Order::orderBy('id', 'desc')->paginate(5);
+        }
+        
+        $orderPhases = OrderPhase::all();
+
+        if($user->profile && $user->profile->cars) {
+            $cars = Car::where('profile_id', $user->profile->id)->paginate(5);
+            return view('layouts.dashboard-content', compact('users', 'roles', 'programs', 'steps', 'orders', 'orderPhases', 'cars'));
+        }
+
+        return view('layouts.dashboard-content', compact('users', 'roles', 'programs', 'steps', 'orders', 'orderPhases'));
+        
 
         // dd($orders);
-        return view('layouts.dashboard', compact('users', 'roles', 'programs', 'steps', 'orders'));
+        
             
     }
 
@@ -39,12 +55,7 @@ class UserController extends Controller
     }
 
 
-    public function showCreateUsers()
-    {
-        dd('show create');
-    }
-
-    public function showEditUsers($id)
+    public function showEditUsers(int $id)
     {
         $user = User::where('id', $id)->with('role')->first();
 
@@ -69,7 +80,7 @@ class UserController extends Controller
 
     }
 
-    public function editUsers(Request $request, $id)
+    public function editUsers(Request $request, int $id)
     {
         $user = User::where('id', $id)->first();
 
@@ -86,7 +97,7 @@ class UserController extends Controller
 
     }
 
-    public function deleteUser($id)
+    public function deleteUser(int $id)
     {
         $user = User::where('id', $id)->first();
 
@@ -108,7 +119,7 @@ class UserController extends Controller
     }
 
 
-    public function updatePassword(Request $request, $id)
+    public function updatePassword(Request $request,int $id)
     {
         $user = User::where('id', $id)->first();
 
@@ -119,8 +130,4 @@ class UserController extends Controller
     }
 
 
-    public function showCreateProfile()
-    {
-        dd("proslo");
-    }
 }
