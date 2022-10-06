@@ -26,6 +26,10 @@ Route::get('/', function () {
     return view('index', compact('washingPrograms'));
 })->name('home');
 
+Route::get('/readme', function() {
+    return view('layouts.readme');
+})->name('readme');
+
 
 Route::middleware(['auth', 'HasRole:administrator'])->prefix('users')->name('users.')->group(function () {
 

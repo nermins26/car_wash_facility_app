@@ -20,7 +20,7 @@ class HasProfile
             return $next($request);
         } 
 
-        return redirect(route('profiles.show.create'));
+        return redirect(route('profiles.show.create'))->with('user-info-missing', 'You need to have your profile completed to make an order');
 
         
     }

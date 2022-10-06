@@ -38,7 +38,7 @@
                                 data-target="#deleteItemModal"
                                 class="delete_item_btn btn btn-sm btn-danger m-1">Cancel order</button>
                             @elseif($order->phase->name == "order accepted")
-                                Call our Service to cancel the order as soon as possible
+                                Order accepted. Call our Service to cancel the order as soon as possible
                             @else
                                 <p class="bg-warning p-2">
                                     Order in progress. Can not cancel the order now. Call our Service for more info.

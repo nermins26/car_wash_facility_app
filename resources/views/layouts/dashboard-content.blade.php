@@ -8,6 +8,11 @@
                     <p>{{ session('response-message') }}</p>
                 </div>
             @endif
+            @if (session('user-info-missing'))
+                <div class="alert alert-danger p-3 mb-2">
+                    <p>{{ session('user-info-missing') }}</p>
+                </div>
+            @endif
             <div id="success_message"></div>
             <div class="tab-pane fade show {{auth()->user()->role->name == 'administrator' ? 'active' : ''}}" id="v-pills-users" role="tabpanel" aria-labelledby="v-pills-users-tab">
                 <div class="mb-2">
@@ -36,9 +41,6 @@
             <div class="tab-pane fade" id="v-pills-my-orders" role="tabpanel" aria-labelledby="v-pills-my-orders-tab">
                 @include('layouts.orders.user-orders')
             </div>
-            {{-- <div class="tab-pane fade" id="v-pills-my-password" role="tabpanel" aria-labelledby="v-pills-my-password-tab">
-                <h1>Change password</h1>
-            </div> --}}
         </div>
     </div>
 @endsection

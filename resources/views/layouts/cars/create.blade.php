@@ -8,6 +8,11 @@
             <div class="card p-4">
                 <div class="card-header">
                     <h3>Add a Car</h3>
+                    @if (session('user-info-missing'))
+                        <div class="alert alert-danger p-3 mb-2">
+                            <p>{{ session('user-info-missing') }}</p>
+                        </div>
+                    @endif
                 </div>
                 <div class="card-body">
                     @include('layouts.cars.cars-form', ['create' => true])

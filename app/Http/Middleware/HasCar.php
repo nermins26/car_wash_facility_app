@@ -19,8 +19,8 @@ class HasCar
         if(auth()->user()->profile->cars->count() > 0) {
             return $next($request);
         } 
-        
-        return redirect(route('cars.show.create'));
+
+        return redirect(route('cars.show.create'))->with('user-info-missing', 'You need to have at least one car to make an order');
 
         
     }

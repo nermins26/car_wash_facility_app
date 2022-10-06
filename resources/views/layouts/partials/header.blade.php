@@ -10,6 +10,9 @@
                 <li class="nav-item active mx-3">
                   <a class="nav-link" href="{{route('home')}}">Home<span class="sr-only">(current)</span></a>
                 </li>
+                <li class="nav-item mx-3">
+                  <a class="nav-link" href="{{route('readme')}}">Readme</a>
+                </li>
                 @auth
                   <li class="nav-item mx-3">
                     <a id="dashboardLink" class="nav-link btn btn-outline-primary onHoverWhite" href="{{route('dashboard.show')}}">
