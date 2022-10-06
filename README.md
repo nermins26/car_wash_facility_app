@@ -21,7 +21,7 @@
 
 <p>Aplikacija je koncipirana tako da imamo 3 rola: Admin, Radnik i Klijent.<br><br>Admin može da radi CRUD korisnika, CRUD Programa za čišćenje, Koraka/procedura prilikom čićenja i da pregleda narudžbe, mjenja status ili briše narudžbe.<br><br>Radnik ima odgovornosti i prava isključivo u pogledu narudžbi tako da može samo da pregleda narudžbe, mjenja status ili briše narudžbe.<br><br>Klijent ima mogućnost da pregleda pakete/programe, kreira/popuni/mjenja profil sa osnovnim informacijama, vrši CRUD automobila koji su u njegovom vlasništvu. Može da vrši narudžbe, ali samo u slučaju da je kreirao profil i dodao barem jedno auto. Može da pregleda narudžbe i otkaže/obriše ukoliko je narudžba u statusu: "na čekanju".<br><br>Sva tri korisnika imaju svoj zaseban dashboard koji prikazuje funkcionalnosti shodno rolu korisnika.
 
-## 4. Validacija i servisi
+## Validacija i servisi
 
 <p>Za validaciju i sigurnost ruta korišteni su različiti middleware-i, za provjeru prijave korisnika, njegove role, dozvola, da li ima profil, da li je dodao auto itd.</p>
 <p>Za sistem obračuna cijene narudžbe korišteni su Laravel Events gdje prilikom inicijalnog kreiranja korisnika (na event kreiranja) postavljamo u zasebnu tabelu id korisnika i inicijalni broj narudzbi: 0. Prije svake narudžbe provjerava se broj ukupnih narudžbi korisnika i prema tome se obračunava cijena za narednu. Popusti se obračunavaju prema sljedećem:<br><br>
@@ -39,6 +39,6 @@ Nakon svake simulirane narudžbe, korisniku se broj narudžbi povećava za 1.</p
 <p>Kada su u pitanju Programi za čišćenje i procedure čišćenja(koraci, faze), korištena je pivot tabela iz razloga jer se radi o many-to-many relaciji</p>
 <p>Admin ne može da kreira profile i dodaje auta za same korisnike i profile, budući da je to već implementirano na klijent strani tako da nije bilo potrebe da se radi duplo i za admina.</p>
                     
-## 6. Greške i nedostaci
+## Greške i nedostaci
 <p>Većina bug-ova je ispravljena s tim da ostaje nedostatak/bug u navigaciji(tabovi) da svaki put kada reloadujemo stranicu, korisnik mora manuelno da prebaci na tab na kojem je bio prije reload-a. Ovaj problem svakako bi se najbolje rješio implementiranjem rješenja sličnog kao i kod CRUD-a korisnika (AJAX) ali bi bilo potrebno više vremena.</p>
 <p>Bila je namjera da se ubaci i search query ili eventualno filter query koji bi mogao da rezultate iz tabela filtrira po odredjenim parametrima kao npr. starije/novije i sl.</p>
